@@ -1,13 +1,15 @@
 package com.sislocacao.api.domain.model;
 
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-
-import com.sislocacao.api.domain.enumerators.EstadoCivilEnum;
+import javax.persistence.OneToOne;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,19 +17,22 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Inquilino {
+public class Locacao {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
 	private Long id;
 	
-	private String nome;
-	private String rg;
-	private String cpf;
-	private String nacionalidade;
-	private EstadoCivilEnum estadoCivil;
-	private String profissao;
+	private LocalDate dataInicio;
+	private LocalDate dataFim;
+	private BigDecimal valorCaucao;
+	
+	@OneToOne
+	private Imovel imovel;
+	
+	@ManyToOne
+	private Inquilino inquilino;
 	
 	@ManyToOne
 	private Usuario usuario;

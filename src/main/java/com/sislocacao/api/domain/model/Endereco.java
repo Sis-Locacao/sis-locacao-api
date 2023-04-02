@@ -25,4 +25,7 @@ public class Endereco {
 	
 	@ManyToOne
 	private Cidade cidade;
+	
+	@ManyToOne
+	private Usuario usuario;
 }
