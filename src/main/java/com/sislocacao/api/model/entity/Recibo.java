@@ -1,4 +1,4 @@
-package com.sislocacao.api.domain.model;
+package com.sislocacao.api.model.entity;
 
 
 import java.math.BigDecimal;

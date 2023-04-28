@@ -1,13 +1,13 @@
-package com.sislocacao.api.domain.model;
+package com.sislocacao.api.model.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-
-import com.sislocacao.api.domain.enumerators.EstadoCivilEnum;
+import javax.persistence.ManyToMany;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,20 +15,19 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Inquilino {
-	
+public class Endereco {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
 	private Long id;
+
+	private String cep;
+	private String rua;
+	private String numero;
+	private String cidade;
+	private String estado;
 	
-	private String nome;
-	private String rg;
-	private String cpf;
-	private String nacionalidade;
-	private EstadoCivilEnum estadoCivil;
-	private String profissao;
-	
-	@ManyToOne
-	private Usuario usuario;
+	@ManyToMany(mappedBy = "enderecos")
+	private List<Usuario> usuarios = new ArrayList<>();
 }

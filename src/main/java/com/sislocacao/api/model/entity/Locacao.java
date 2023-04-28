@@ -1,7 +1,8 @@
-package com.sislocacao.api.domain.model;
+package com.sislocacao.api.model.entity;
 
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,20 +17,22 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Imovel {
+public class Locacao {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
 	private Long id;
 	
-	private String apelido;
-	private String descricao;
-	private BigDecimal valor;
-	private Boolean garagem;
+	private LocalDate dataInicio;
+	private LocalDate dataFim;
+	private BigDecimal valorCaucao;
 	
 	@OneToOne
-	private Endereco endereco;
+	private Imovel imovel;
+	
+	@ManyToOne
+	private Inquilino inquilino;
 	
 	@ManyToOne
 	private Usuario usuario;

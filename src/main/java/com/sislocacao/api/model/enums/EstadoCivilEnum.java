@@ -1,4 +1,4 @@
-package com.sislocacao.api.domain.enumerators;
+package com.sislocacao.api.model.enums;
 
 public enum EstadoCivilEnum {	
 	SOLTEIRO("Solteiro"),
