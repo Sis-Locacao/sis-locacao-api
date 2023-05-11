@@ -13,8 +13,8 @@ import com.sislocacao.api.model.dto.UsuarioEntradaDTO;
 import com.sislocacao.api.model.dto.UsuarioSaidaDTO;
 import com.sislocacao.api.model.entity.Endereco;
 import com.sislocacao.api.model.entity.Usuario;
-import com.sislocacao.api.respository.EnderecoRepository;
-import com.sislocacao.api.respository.UsuarioRepository;
+import com.sislocacao.api.repositories.EnderecoRepository;
+import com.sislocacao.api.repositories.UsuarioRepository;
 import com.sislocacao.api.services.UsuarioService;
 
 @Service

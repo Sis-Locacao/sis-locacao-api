@@ -1,4 +1,4 @@
-package com.sislocacao.api.resource;
+package com.sislocacao.api.resources;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
