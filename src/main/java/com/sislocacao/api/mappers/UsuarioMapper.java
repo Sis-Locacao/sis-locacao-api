@@ -29,6 +29,8 @@ public class UsuarioMapper {
 		usuario.setRg(usuarioEntradaDTO.getRg());
 		usuario.setEmail(usuarioEntradaDTO.getEmail());
 		usuario.setSenha(usuarioEntradaDTO.getSenha());
+		usuario.setNacionalidade(usuarioEntradaDTO.getNacionalidade());
+		usuario.setEstadoCivil(usuarioEntradaDTO.getEstadoCivil());
 		
 		usuario.getEnderecos().clear();
 		
@@ -41,7 +43,7 @@ public class UsuarioMapper {
 		UsuarioSaidaDTO usuarioSaida = new UsuarioSaidaDTO();
 		
 		usuarioSaida.setId(usuario.getId());
-		usuarioSaida.setNacionalidade(usuarioSaida.getNacionalidade());
+		usuarioSaida.setNacionalidade(usuario.getNacionalidade());
 		usuarioSaida.setNome(usuario.getNome());
 		
 		List<EnderecoDTO> enderecos = new ArrayList<>();

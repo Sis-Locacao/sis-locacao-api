@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import com.sislocacao.api.model.enums.EstadoCivilEnum;
 
@@ -13,6 +14,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Entity
+@Table(name = "tb_inquilinos")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Inquilino {
