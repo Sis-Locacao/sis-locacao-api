@@ -2,11 +2,13 @@ package com.sislocacao.api.services.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sislocacao.api.exceptions.impl.DataIntegrityViolationException;
 import com.sislocacao.api.mappers.EnderecoMapper;
 import com.sislocacao.api.mappers.UsuarioMapper;
 import com.sislocacao.api.model.dto.UsuarioEntradaDTO;
@@ -19,32 +21,57 @@ import com.sislocacao.api.services.UsuarioService;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
-	
+
 	@Autowired
 	UsuarioRepository usuarioRepository;
-	
+
 	@Autowired
 	EnderecoRepository enderecoRepository;
-	
+
 	@Autowired
 	UsuarioMapper usuarioMapper;
-	
+
 	@Autowired
 	EnderecoMapper enderecoMapper;
-	
+
 	@Override
 	@Transactional
 	public UsuarioSaidaDTO salvar(UsuarioEntradaDTO usuarioEntradaDTO) {
 		List<Endereco> enderecos = new ArrayList<>();
-		
+
+		validaUsuario(usuarioEntradaDTO);
+
 		usuarioEntradaDTO.getEnderecos().forEach(endereco -> {
 			Endereco enderecoEntidade = enderecoMapper.enderecoDtoParaEnderecoEntidade(endereco);
 			enderecos.add(enderecoEntidade);
 		});
-		
+
 		Usuario usuario = usuarioMapper.usuarioDtoParaUsuarioEntidade(usuarioEntradaDTO, enderecos);
 
 		return usuarioMapper.usuarioEntidadeParaUsuarioSaida(usuarioRepository.save(usuario));
+	}
+
+	private void validaUsuario(UsuarioEntradaDTO usuarioEntradaDTO) {
+		// verifica se existe um usuario com o rg
+		Optional<Usuario> usuarioRg = usuarioRepository.findByRg(usuarioEntradaDTO.getRg());
+
+		if (usuarioRg.isPresent()) {
+			throw new DataIntegrityViolationException("Já existe um usuário cadastrado com esse RG");
+		}
+
+		// verifica se existe um usuario com o cpf
+		Optional<Usuario> findByCpf = usuarioRepository.findByCpf(usuarioEntradaDTO.getCpf());
+
+		if (findByCpf.isPresent()) {
+			throw new DataIntegrityViolationException("Já existe um usuário cadastrado com esse CPF");
+		}
+
+		// verifica se existe um usuario com o email
+		Optional<Usuario> findByEmail = usuarioRepository.findByEmail(usuarioEntradaDTO.getEmail());
+
+		if (findByEmail.isPresent()) {
+			throw new DataIntegrityViolationException("Já existe um usuário cadastrado com esse e-mail");
+		}
 	}
 
 }
