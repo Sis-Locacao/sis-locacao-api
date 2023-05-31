@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -30,6 +32,8 @@ public class Endereco {
 	private String cidade;
 	private String estado;
 	
+	@JsonIgnore
 	@ManyToMany(mappedBy = "enderecos")
 	private List<Usuario> usuarios = new ArrayList<>();
+	
 }

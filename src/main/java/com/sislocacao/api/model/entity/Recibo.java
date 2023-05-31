@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -33,7 +32,4 @@ public class Recibo {
 	private BigDecimal totalJuros;
 	private BigDecimal totalRecibo;
 	private String totalPorExtenso;
-	
-	@ManyToOne
-	private Locacao locacao;
 }

@@ -12,8 +12,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sislocacao.api.model.enums.EstadoCivilEnum;
 
 import lombok.Data;
@@ -45,7 +47,20 @@ public class Usuario {
 
 	private EstadoCivilEnum estadoCivil;
 
+	@JsonIgnore
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "usuario_endereco", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "endereco_id"))
 	private List<Endereco> enderecos = new ArrayList<>();
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "usuario")
+	private List<Inquilino> inquilinos = new ArrayList<>();
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "usuario")
+	private List<Locacao> locacoes = new ArrayList<>();
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "usuario")
+	private List<Imovel> imoveis = new ArrayList<>();
 }
