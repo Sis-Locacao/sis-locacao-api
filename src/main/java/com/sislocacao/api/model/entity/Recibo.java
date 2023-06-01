@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -32,4 +34,8 @@ public class Recibo {
 	private BigDecimal totalJuros;
 	private BigDecimal totalRecibo;
 	private String totalPorExtenso;
+	
+	@ManyToOne
+	@JoinColumn(name = "locacao_id")
+	private Locacao locacao;
 }

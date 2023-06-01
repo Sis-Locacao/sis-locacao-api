@@ -1,9 +1,11 @@
 package com.sislocacao.api.services.impl;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sislocacao.api.exceptions.impl.ResourceNotFoundException;
 import com.sislocacao.api.exceptions.impl.SisLocacaoException;
@@ -23,6 +25,7 @@ public class ReciboServiceImpl implements ReciboService {
 	@Autowired
 	private LocacaoRepository locacaoRepository;
 
+	@Transactional
 	@Override
 	public void salvarRecibo(ReciboEntradaDTO reciboEntradaDTO) {
 		// recupera dados do contrato
@@ -36,9 +39,10 @@ public class ReciboServiceImpl implements ReciboService {
 		}
 
 		// recupera ultimo recibo gerado para esse inquilino
-//		Optional<ReciboSaidaDTO> recibo = reciboRepository.recuperaUltimoReciboPorLocacao(reciboEntradaDTO.getLocacaoId());
+		Recibo buscarUltimoReciboGerado = reciboRepository.buscarUltimoReciboGerado(reciboEntradaDTO.getLocacaoId());
 
 		// incrementa o numero do recibo
+		Integer numeroRecibo = buscarUltimoReciboGerado.getNumeroRecibo() + 1;
 
 		// realiza calculo de juros
 
