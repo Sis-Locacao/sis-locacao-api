@@ -15,6 +15,7 @@ import com.sislocacao.api.model.entity.Recibo;
 import com.sislocacao.api.repositories.LocacaoRepository;
 import com.sislocacao.api.repositories.ReciboRepository;
 import com.sislocacao.api.services.ReciboService;
+import com.sislocacao.api.utils.ValorPorExtenso;
 
 @Service
 public class ReciboServiceImpl implements ReciboService {
@@ -44,21 +45,28 @@ public class ReciboServiceImpl implements ReciboService {
 		// incrementa o numero do recibo
 		Integer numeroRecibo = buscarUltimoReciboGerado.getNumeroRecibo() + 1;
 
-		// realiza calculo de juros
-
 		// calculo o total do recibo
+		BigDecimal totalRecibo = calculaTotalRecibo(reciboEntradaDTO);
 
 		// escreve valor total por extenso
+		String string = new ValorPorExtenso(totalRecibo).toString();
 
 		// mapear recibo para uma entidade
-
+		
 		// salvar recibo
+		return;
 	}
 
 	@Override
 	public Recibo buscarReciboPorId(long Id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	private BigDecimal calculaTotalRecibo(ReciboEntradaDTO recibo) {
+		// realiza calculo de juros
+		
+		return BigDecimal.ONE;
 	}
 
 }
