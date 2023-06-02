@@ -9,11 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sislocacao.api.exceptions.impl.ResourceNotFoundException;
 import com.sislocacao.api.exceptions.impl.SisLocacaoException;
+import com.sislocacao.api.mappers.ReciboMapper;
+import com.sislocacao.api.model.dto.LocacaoDTO;
 import com.sislocacao.api.model.dto.ReciboEntradaDTO;
 import com.sislocacao.api.model.entity.Locacao;
 import com.sislocacao.api.model.entity.Recibo;
 import com.sislocacao.api.repositories.LocacaoRepository;
 import com.sislocacao.api.repositories.ReciboRepository;
+import com.sislocacao.api.services.LocacaoService;
 import com.sislocacao.api.services.ReciboService;
 import com.sislocacao.api.utils.ValorPorExtenso;
 
@@ -26,6 +29,9 @@ public class ReciboServiceImpl implements ReciboService {
 	@Autowired
 	private LocacaoRepository locacaoRepository;
 
+	@Autowired
+	private ReciboMapper reciboMapper;
+	
 	@Transactional
 	@Override
 	public void salvarRecibo(ReciboEntradaDTO reciboEntradaDTO) {
@@ -33,28 +39,21 @@ public class ReciboServiceImpl implements ReciboService {
 		Locacao locacao = locacaoRepository.findById(reciboEntradaDTO.getLocacaoId())
 				.orElseThrow(() -> new ResourceNotFoundException(
 						"Locacação não encontrada com o id: " + reciboEntradaDTO.getLocacaoId()));
-
-		// valida se o contrato esta vencido
-		if (locacao.getDataFim().isBefore(LocalDate.now())) {
-			throw new SisLocacaoException("Esse contrato de locação encontra-se vencido");
-		}
-
+		
 		// recupera ultimo recibo gerado para esse inquilino
 		Recibo buscarUltimoReciboGerado = reciboRepository.buscarUltimoReciboGerado(reciboEntradaDTO.getLocacaoId());
-
+		
 		// incrementa o numero do recibo
-		Integer numeroRecibo = buscarUltimoReciboGerado.getNumeroRecibo() + 1;
+		Integer numeroRecibo = buscarUltimoReciboGerado == null ? 1 : buscarUltimoReciboGerado.getNumeroRecibo() + 1;
 
 		// calculo o total do recibo
-		BigDecimal totalRecibo = calculaTotalRecibo(reciboEntradaDTO);
-
-		// escreve valor total por extenso
-		String string = new ValorPorExtenso(totalRecibo).toString();
+		BigDecimal totalRecibo = calculaTotalRecibo(reciboEntradaDTO, locacao);
 
 		// mapear recibo para uma entidade
+		Recibo recibo = reciboMapper.paraReciboEntidade(reciboEntradaDTO, totalRecibo, numeroRecibo, locacao);
 		
 		// salvar recibo
-		return;
+		reciboRepository.save(recibo);
 	}
 
 	@Override
@@ -63,10 +62,8 @@ public class ReciboServiceImpl implements ReciboService {
 		return null;
 	}
 	
-	private BigDecimal calculaTotalRecibo(ReciboEntradaDTO recibo) {
-		// realiza calculo de juros
-		
-		return BigDecimal.ONE;
+	private BigDecimal calculaTotalRecibo(ReciboEntradaDTO recibo, Locacao locacao) {
+		return locacao.getImovel().getValor().add(recibo.getValorAgua()).add(recibo.getValorEnergia());
 	}
 
 }

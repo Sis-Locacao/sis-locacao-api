@@ -14,4 +14,5 @@ public class ReciboEntradaDTO {
 	private BigDecimal valorAgua;
 	private BigDecimal valorEnergia;
 	private Long locacaoId;
+	private Integer numeroRecibo;
 }

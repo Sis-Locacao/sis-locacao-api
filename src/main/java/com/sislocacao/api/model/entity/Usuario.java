@@ -1,7 +1,9 @@
 package com.sislocacao.api.model.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,29 +20,24 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sislocacao.api.model.enums.EstadoCivilEnum;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 @Entity
 @Table(name = "tb_usuarios")
-@Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Usuario {
+public class Usuario implements Serializable{
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@EqualsAndHashCode.Include
 	private Long id;
 
 	private String nome;
-	
+
 	@Column(unique = true)
 	private String rg;
-	
+
 	@Column(unique = true)
 	private String cpf;
 	private String nacionalidade;
-	
+
 	@Column(unique = true)
 	private String email;
 	private String senha;
@@ -51,16 +48,153 @@ public class Usuario {
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "usuario_endereco", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "endereco_id"))
 	private List<Endereco> enderecos = new ArrayList<>();
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "usuario")
 	private List<Inquilino> inquilinos = new ArrayList<>();
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "usuario")
 	private List<Locacao> locacoes = new ArrayList<>();
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "usuario")
 	private List<Imovel> imoveis = new ArrayList<>();
+
+	public Usuario() {
+	}
+
+	public Usuario(Long id, String nome, String rg, String cpf, String nacionalidade, String email, String senha,
+			EstadoCivilEnum estadoCivil) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.rg = rg;
+		this.cpf = cpf;
+		this.nacionalidade = nacionalidade;
+		this.email = email;
+		this.senha = senha;
+		this.estadoCivil = estadoCivil;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getRg() {
+		return rg;
+	}
+
+	public void setRg(String rg) {
+		this.rg = rg;
+	}
+
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+	public String getNacionalidade() {
+		return nacionalidade;
+	}
+
+	public void setNacionalidade(String nacionalidade) {
+		this.nacionalidade = nacionalidade;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+
+	public EstadoCivilEnum getEstadoCivil() {
+		return estadoCivil;
+	}
+
+	public void setEstadoCivil(EstadoCivilEnum estadoCivil) {
+		this.estadoCivil = estadoCivil;
+	}
+
+	public List<Endereco> getEnderecos() {
+		return enderecos;
+	}
+
+	public void setEnderecos(List<Endereco> enderecos) {
+		this.enderecos = enderecos;
+	}
+
+	public List<Inquilino> getInquilinos() {
+		return inquilinos;
+	}
+
+	public void setInquilinos(List<Inquilino> inquilinos) {
+		this.inquilinos = inquilinos;
+	}
+
+	public List<Locacao> getLocacoes() {
+		return locacoes;
+	}
+
+	public void setLocacoes(List<Locacao> locacoes) {
+		this.locacoes = locacoes;
+	}
+
+	public List<Imovel> getImoveis() {
+		return imoveis;
+	}
+
+	public void setImoveis(List<Imovel> imoveis) {
+		this.imoveis = imoveis;
+	}
+
+	@Override
+	public String toString() {
+		return "Usuario [id=" + id + ", nome=" + nome + ", rg=" + rg + ", cpf=" + cpf + ", nacionalidade="
+				+ nacionalidade + ", email=" + email + ", senha=" + senha + ", estadoCivil=" + estadoCivil
+				+ ", enderecos=" + enderecos + ", inquilinos=" + inquilinos + ", locacoes=" + locacoes + ", imoveis="
+				+ imoveis + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Usuario other = (Usuario) obj;
+		return Objects.equals(id, other.id);
+	}
 }
