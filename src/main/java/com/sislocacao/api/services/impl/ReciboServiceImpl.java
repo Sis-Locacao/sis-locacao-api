@@ -1,24 +1,19 @@
 package com.sislocacao.api.services.impl;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sislocacao.api.exceptions.impl.ResourceNotFoundException;
-import com.sislocacao.api.exceptions.impl.SisLocacaoException;
 import com.sislocacao.api.mappers.ReciboMapper;
-import com.sislocacao.api.model.dto.LocacaoDTO;
 import com.sislocacao.api.model.dto.ReciboEntradaDTO;
 import com.sislocacao.api.model.entity.Locacao;
 import com.sislocacao.api.model.entity.Recibo;
 import com.sislocacao.api.repositories.LocacaoRepository;
 import com.sislocacao.api.repositories.ReciboRepository;
-import com.sislocacao.api.services.LocacaoService;
 import com.sislocacao.api.services.ReciboService;
-import com.sislocacao.api.utils.ValorPorExtenso;
 
 @Service
 public class ReciboServiceImpl implements ReciboService {
@@ -46,7 +41,7 @@ public class ReciboServiceImpl implements ReciboService {
 		// incrementa o numero do recibo
 		Integer numeroRecibo = buscarUltimoReciboGerado == null ? 1 : buscarUltimoReciboGerado.getNumeroRecibo() + 1;
 
-		// calculo o total do recibo
+		// calcula o total do recibo
 		BigDecimal totalRecibo = calculaTotalRecibo(reciboEntradaDTO, locacao);
 
 		// mapear recibo para uma entidade

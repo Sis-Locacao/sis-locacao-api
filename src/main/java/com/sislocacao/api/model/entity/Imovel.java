@@ -34,15 +34,15 @@ public class Imovel implements Serializable {
 	private Boolean garagem;
 
 	@JsonIgnore
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "imovel", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "imovel", fetch = FetchType.LAZY)
 	private List<Locacao> locacoes = new ArrayList<>();
 
-	@OneToOne(fetch = FetchType.EAGER)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "endereco_id")
 	private Endereco endereco;
 

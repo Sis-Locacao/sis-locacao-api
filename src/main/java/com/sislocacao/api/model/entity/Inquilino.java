@@ -40,7 +40,7 @@ public class Inquilino implements Serializable {
 	private Usuario usuario;
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "inquilino", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "inquilino", fetch = FetchType.LAZY)
 	private List<Locacao> locacoes = new ArrayList<>();
 
 	public Inquilino() {
