@@ -2,11 +2,16 @@ package com.sislocacao.api.model.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -20,10 +25,11 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sislocacao.api.model.enums.EstadoCivilEnum;
+import com.sislocacao.api.model.enums.Perfil;
 
 @Entity
 @Table(name = "tb_usuarios")
-public class Usuario implements Serializable{
+public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -42,6 +48,10 @@ public class Usuario implements Serializable{
 	@Column(unique = true)
 	private String email;
 	private String senha;
+
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "PERFIS")
+	private Set<Integer> perfis = new HashSet<>();
 
 	private EstadoCivilEnum estadoCivil;
 
@@ -63,6 +73,7 @@ public class Usuario implements Serializable{
 	private List<Imovel> imoveis = new ArrayList<>();
 
 	public Usuario() {
+		addPerfil(Perfil.CLIENTE);
 	}
 
 	public Usuario(Long id, String nome, String rg, String cpf, String nacionalidade, String email, String senha,
@@ -76,6 +87,7 @@ public class Usuario implements Serializable{
 		this.email = email;
 		this.senha = senha;
 		this.estadoCivil = estadoCivil;
+		addPerfil(Perfil.CLIENTE);
 	}
 
 	public Long getId() {
@@ -172,6 +184,14 @@ public class Usuario implements Serializable{
 
 	public void setImoveis(List<Imovel> imoveis) {
 		this.imoveis = imoveis;
+	}
+
+	public Set<Perfil> getPerfis() {
+		return perfis.stream().map(Perfil::toEnum).collect(Collectors.toSet());
+	}
+
+	public void addPerfil(Perfil perfil) {
+		perfis.add(perfil.getCod());
 	}
 
 	@Override

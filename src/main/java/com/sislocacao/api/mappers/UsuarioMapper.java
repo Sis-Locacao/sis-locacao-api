@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.sislocacao.api.model.dto.EnderecoDTO;
@@ -18,6 +19,9 @@ public class UsuarioMapper {
 	@Autowired
 	private EnderecoMapper enderecoMapper;
 	
+	@Autowired
+	private BCryptPasswordEncoder bcrypt;
+	
 	public Usuario usuarioDtoParaUsuarioEntidade(UsuarioEntradaDTO usuarioEntradaDTO, List<Endereco> enderecos) {
 		Usuario usuario = new Usuario();
 		
@@ -28,7 +32,7 @@ public class UsuarioMapper {
 		usuario.setNacionalidade(usuarioEntradaDTO.getNacionalidade());
 		usuario.setRg(usuarioEntradaDTO.getRg());
 		usuario.setEmail(usuarioEntradaDTO.getEmail());
-		usuario.setSenha(usuarioEntradaDTO.getSenha());
+		usuario.setSenha(bcrypt.encode(usuarioEntradaDTO.getSenha()));
 		usuario.setNacionalidade(usuarioEntradaDTO.getNacionalidade());
 		usuario.setEstadoCivil(usuarioEntradaDTO.getEstadoCivil());
 		

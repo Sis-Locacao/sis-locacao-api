@@ -16,9 +16,8 @@ public class LocacaoServiceImpl implements LocacaoService {
 
 	@Override
 	public Locacao buscarLocacaoPorId(Long id) {
-		Locacao locacao = locacaoRepository.findById(id)
+		return locacaoRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Locação não encontrada com o id: " + id));
-		return locacao;
 	}
 
 }

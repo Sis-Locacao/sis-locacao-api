@@ -1,6 +1,8 @@
 package com.sislocacao.api.services.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,10 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sislocacao.api.exceptions.impl.ResourceNotFoundException;
 import com.sislocacao.api.mappers.ReciboMapper;
 import com.sislocacao.api.model.dto.ReciboEntradaDTO;
+import com.sislocacao.api.model.dto.ReciboSaidaDTO;
 import com.sislocacao.api.model.entity.Locacao;
 import com.sislocacao.api.model.entity.Recibo;
 import com.sislocacao.api.repositories.LocacaoRepository;
 import com.sislocacao.api.repositories.ReciboRepository;
+import com.sislocacao.api.services.LocacaoService;
 import com.sislocacao.api.services.ReciboService;
 
 @Service
@@ -23,13 +27,16 @@ public class ReciboServiceImpl implements ReciboService {
 
 	@Autowired
 	private LocacaoRepository locacaoRepository;
+	
+	@Autowired
+	private LocacaoService locacaoService;
 
 	@Autowired
 	private ReciboMapper reciboMapper;
 	
 	@Transactional
 	@Override
-	public void salvarRecibo(ReciboEntradaDTO reciboEntradaDTO) {
+	public ReciboSaidaDTO salvarRecibo(ReciboEntradaDTO reciboEntradaDTO) {
 		// recupera dados do contrato
 		Locacao locacao = locacaoRepository.findById(reciboEntradaDTO.getLocacaoId())
 				.orElseThrow(() -> new ResourceNotFoundException(
@@ -48,8 +55,25 @@ public class ReciboServiceImpl implements ReciboService {
 		Recibo recibo = reciboMapper.paraReciboEntidade(reciboEntradaDTO, totalRecibo, numeroRecibo, locacao);
 		
 		// salvar recibo
-		reciboRepository.save(recibo);
+		Recibo reciboSalvo = reciboRepository.save(recibo);
+		
+		return reciboMapper.paraReciboSaidaDto(reciboSalvo);
 	}
+	
+	@Override
+	public List<ReciboSaidaDTO> listarRecibos(final Long locacaoId){
+		Locacao locacao = locacaoService.buscarLocacaoPorId(locacaoId);
+		List<Recibo> recibos = reciboRepository.findAllByLocacao(locacao);
+		System.out.println(recibos);
+		
+		List<ReciboSaidaDTO> listaRecibosSaida = new ArrayList<>();
+		recibos.forEach(recibo ->{
+			listaRecibosSaida.add(reciboMapper.paraReciboSaidaDto(recibo));
+		});
+		
+		return listaRecibosSaida;
+	}
+	
 
 	@Override
 	public Recibo buscarReciboPorId(long Id) {

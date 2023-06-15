@@ -1,6 +1,9 @@
 package com.sislocacao.api.services;
 
+import java.util.List;
+
 import com.sislocacao.api.model.dto.ReciboEntradaDTO;
+import com.sislocacao.api.model.dto.ReciboSaidaDTO;
 import com.sislocacao.api.model.entity.Recibo;
 
 public interface ReciboService {
@@ -10,7 +13,7 @@ public interface ReciboService {
 	 * 
 	 * @param reciboEntradaDTO O objeto ReciboEntradaDTO contendo parte dos dados de recibo a ser salvo
 	 */
-	public void salvarRecibo(ReciboEntradaDTO reciboEntradaDTO);
+	public ReciboSaidaDTO salvarRecibo(ReciboEntradaDTO reciboEntradaDTO);
 	
 	/**
 	 * Busca os dados de um recibo
@@ -18,4 +21,6 @@ public interface ReciboService {
 	 * @param id do recibo
 	 */
 	public Recibo buscarReciboPorId(final long Id);
+	
+	public List<ReciboSaidaDTO> listarRecibos(final Long locacaoId);
 }
