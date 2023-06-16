@@ -5,10 +5,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sislocacao.api.exceptions.impl.AuthorizationException;
 import com.sislocacao.api.exceptions.impl.DataIntegrityViolationException;
+import com.sislocacao.api.exceptions.impl.ResourceNotFoundException;
 import com.sislocacao.api.mappers.EnderecoMapper;
 import com.sislocacao.api.mappers.UsuarioMapper;
 import com.sislocacao.api.model.dto.UsuarioEntradaDTO;
@@ -17,6 +20,7 @@ import com.sislocacao.api.model.entity.Endereco;
 import com.sislocacao.api.model.entity.Usuario;
 import com.sislocacao.api.repositories.EnderecoRepository;
 import com.sislocacao.api.repositories.UsuarioRepository;
+import com.sislocacao.api.security.UserSS;
 import com.sislocacao.api.services.UsuarioService;
 
 @Service
@@ -39,7 +43,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 	public UsuarioSaidaDTO salvar(UsuarioEntradaDTO usuarioEntradaDTO) {
 		List<Endereco> enderecos = new ArrayList<>();
 
-		validaUsuario(usuarioEntradaDTO);
+//		validaUsuario(usuarioEntradaDTO);
 
 		usuarioEntradaDTO.getEnderecos().forEach(endereco -> {
 			Endereco enderecoEntidade = enderecoMapper.enderecoDtoParaEnderecoEntidade(endereco);
@@ -74,4 +78,25 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 	}
 
+	public static UserSS authenticated() {
+		try {
+			return (UserSS) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	@Override
+	public Usuario validaUsuarioAutenticado() {
+		// valida usuário autenticado
+		UserSS user = authenticated();
+
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
+		return usuarioRepository.findById(user.getId())
+				.orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+
+	}
 }

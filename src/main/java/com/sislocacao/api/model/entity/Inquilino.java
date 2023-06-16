@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -35,12 +34,12 @@ public class Inquilino implements Serializable {
 	private String profissao;
 
 	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "inquilino", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "inquilino")
 	private List<Locacao> locacoes = new ArrayList<>();
 
 	public Inquilino() {

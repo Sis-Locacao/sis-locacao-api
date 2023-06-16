@@ -6,13 +6,14 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_recibos")
@@ -32,16 +33,21 @@ public class Recibo implements Serializable {
 	private BigDecimal totalRecibo;
 	private String totalPorExtenso;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonIgnore
+	@ManyToOne
 	@JoinColumn(name = "locacao_id")
 	private Locacao locacao;
+
+	@ManyToOne
+	@JoinColumn(name = "usuario_id")
+	private Usuario usuario;
 
 	public Recibo() {
 	}
 
 	public Recibo(Long id, LocalDate dataInicio, LocalDate dataFim, Integer numeroRecibo, BigDecimal valorAgua,
 			BigDecimal valorEnergia, BigDecimal totalJuros, BigDecimal totalRecibo, String totalPorExtenso,
-			Locacao locacao) {
+			Locacao locacao, Usuario usuario) {
 		super();
 		this.id = id;
 		this.dataInicio = dataInicio;
@@ -53,6 +59,7 @@ public class Recibo implements Serializable {
 		this.totalRecibo = totalRecibo;
 		this.totalPorExtenso = totalPorExtenso;
 		this.locacao = locacao;
+		this.usuario = usuario;
 	}
 
 	public Long getId() {
@@ -135,12 +142,20 @@ public class Recibo implements Serializable {
 		this.locacao = locacao;
 	}
 
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
 	@Override
 	public String toString() {
 		return "Recibo [id=" + id + ", dataInicio=" + dataInicio + ", dataFim=" + dataFim + ", numeroRecibo="
 				+ numeroRecibo + ", valorAgua=" + valorAgua + ", valorEnergia=" + valorEnergia + ", totalJuros="
 				+ totalJuros + ", totalRecibo=" + totalRecibo + ", totalPorExtenso=" + totalPorExtenso + ", locacao="
-				+ locacao + "]";
+				+ locacao + ", usuario=" + usuario + "]";
 	}
 
 	@Override

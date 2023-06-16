@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,7 +30,7 @@ public class Endereco implements Serializable {
 	private String estado;
 
 	@JsonIgnore
-	@ManyToMany(mappedBy = "enderecos", fetch = FetchType.EAGER)
+	@ManyToMany(mappedBy = "enderecos")
 	private List<Usuario> usuarios = new ArrayList<>();
 
 	public Endereco() {

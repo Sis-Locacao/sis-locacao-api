@@ -38,14 +38,14 @@ public class Usuario implements Serializable {
 
 	private String nome;
 
-	@Column(unique = true)
+//	@Column(unique = true)
 	private String rg;
 
-	@Column(unique = true)
+//	@Column(unique = true)
 	private String cpf;
 	private String nacionalidade;
 
-	@Column(unique = true)
+//	@Column(unique = true)
 	private String email;
 	private String senha;
 
@@ -55,22 +55,25 @@ public class Usuario implements Serializable {
 
 	private EstadoCivilEnum estadoCivil;
 
-	@JsonIgnore
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "usuario_endereco", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "endereco_id"))
 	private List<Endereco> enderecos = new ArrayList<>();
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "usuario")
 	private List<Inquilino> inquilinos = new ArrayList<>();
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "usuario")
 	private List<Locacao> locacoes = new ArrayList<>();
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "usuario")
 	private List<Imovel> imoveis = new ArrayList<>();
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "usuario")
+	private List<Recibo> recibos = new ArrayList<>();
 
 	public Usuario() {
 		addPerfil(Perfil.CLIENTE);

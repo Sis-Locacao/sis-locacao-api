@@ -1,6 +1,6 @@
 package com.sislocacao.api.services;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 import com.sislocacao.api.model.dto.ReciboEntradaDTO;
 import com.sislocacao.api.model.dto.ReciboSaidaDTO;
@@ -16,11 +16,23 @@ public interface ReciboService {
 	public ReciboSaidaDTO salvarRecibo(ReciboEntradaDTO reciboEntradaDTO);
 	
 	/**
-	 * Busca os dados de um recibo
+	 * Recupera um recibo de aluguel pelo id do recibo e id da locação
 	 * 
-	 * @param id do recibo
+	 * @param id
+	 * @param locacaoId
+	 * 
+	 * @return Objeto contendo os dados de Recibo
 	 */
-	public Recibo buscarReciboPorId(final long Id);
+	public Recibo buscarReciboPorId(Long id, Long locacaoId);	
 	
-	public List<ReciboSaidaDTO> listarRecibos(final Long locacaoId);
+	/**
+	 * Retorna uma lista paginada de recibos pela locação associada a esse recibo
+	 * 
+	 * @param locacaoId
+	 * @param page
+	 * @param linesPerPage
+	 * 
+	 * @return Lista páginada de ReciboSaidaDTO
+	 */
+	public Page<ReciboSaidaDTO> listarRecibos(final Long locacaoId, Integer page, Integer linesPerPage);
 }

@@ -8,12 +8,13 @@ import com.sislocacao.api.model.dto.ReciboEntradaDTO;
 import com.sislocacao.api.model.dto.ReciboSaidaDTO;
 import com.sislocacao.api.model.entity.Locacao;
 import com.sislocacao.api.model.entity.Recibo;
+import com.sislocacao.api.model.entity.Usuario;
 import com.sislocacao.api.utils.ValorPorExtenso;
 
 @Component
 public class ReciboMapper {
 	
-	public Recibo paraReciboEntidade(final ReciboEntradaDTO reciboDto, final BigDecimal totalRecibo, final Integer numeroRecibo, final Locacao locacao) {
+	public Recibo paraReciboEntidade(final ReciboEntradaDTO reciboDto, final BigDecimal totalRecibo, final Integer numeroRecibo, final Locacao locacao, final Usuario usuario) {
 		Recibo recibo = new Recibo();
 		
 		recibo.setNumeroRecibo(numeroRecibo);
@@ -28,6 +29,7 @@ public class ReciboMapper {
 		recibo.setDataInicio(reciboDto.getDataInicio());
 		recibo.setDataFim(reciboDto.getDataFim());
 		recibo.setLocacao(locacao);
+		recibo.setUsuario(usuario);
 		
 		return recibo;
 	}

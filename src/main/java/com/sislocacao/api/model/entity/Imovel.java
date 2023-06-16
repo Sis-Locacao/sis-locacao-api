@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,15 +33,15 @@ public class Imovel implements Serializable {
 	private Boolean garagem;
 
 	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "imovel", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "imovel")
 	private List<Locacao> locacoes = new ArrayList<>();
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne
 	@JoinColumn(name = "endereco_id")
 	private Endereco endereco;
 

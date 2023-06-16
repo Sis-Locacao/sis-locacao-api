@@ -2,6 +2,7 @@ package com.sislocacao.api.services;
 
 import com.sislocacao.api.model.dto.UsuarioEntradaDTO;
 import com.sislocacao.api.model.dto.UsuarioSaidaDTO;
+import com.sislocacao.api.model.entity.Usuario;
 
 public interface UsuarioService {
 	/**
@@ -11,4 +12,6 @@ public interface UsuarioService {
 	 * @return Um objeto UsuarioSaidaDTO representando o usuário salvo.
 	 */
 	public UsuarioSaidaDTO salvar(final UsuarioEntradaDTO usuarioEntradaDTO);
+	
+	public Usuario validaUsuarioAutenticado();
 }

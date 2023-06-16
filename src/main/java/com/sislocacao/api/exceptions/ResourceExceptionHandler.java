@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.sislocacao.api.exceptions.impl.AuthorizationException;
 import com.sislocacao.api.exceptions.impl.DataIntegrityViolationException;
 import com.sislocacao.api.exceptions.impl.ResourceNotFoundException;
 import com.sislocacao.api.exceptions.impl.SisLocacaoException;
@@ -50,5 +51,17 @@ public class ResourceExceptionHandler {
 		err.setPath(request.getRequestURI());
 
 		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY.value()).body(err);
+	}
+	
+	@ExceptionHandler(AuthorizationException.class)
+	public ResponseEntity<StandardError> authorization(AuthorizationException exception, HttpServletRequest request){
+		StandardError err = new StandardError();
+		err.setTimestamp(Instant.now());
+		err.setStatus(HttpStatus.FORBIDDEN.value());
+		err.setError("Não autorizado.");
+		err.setMessage(exception.getMessage());
+		err.setPath(request.getRequestURI());
+
+		return ResponseEntity.status(HttpStatus.FORBIDDEN.value()).body(err);
 	}
 }

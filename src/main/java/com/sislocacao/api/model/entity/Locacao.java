@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_locacoes")
@@ -30,19 +31,20 @@ public class Locacao implements Serializable {
 	private LocalDate dataFim;
 	private BigDecimal valorCaucao;
 
-	@OneToOne(fetch = FetchType.EAGER)
+	@OneToOne
 	@JoinColumn(name = "imovel_id")
 	private Imovel imovel;
 
-	@OneToOne(fetch = FetchType.EAGER)
+	@OneToOne
 	@JoinColumn(name = "inquilino_id")
 	private Inquilino inquilino;
 
-	@OneToOne(fetch = FetchType.EAGER)
+	@JsonIgnore
+	@OneToOne
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
 
-	@OneToMany(mappedBy = "locacao", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "locacao")
 	private List<Recibo> recibos = new ArrayList<>();
 
 	public Locacao() {
