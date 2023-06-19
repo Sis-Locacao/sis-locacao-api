@@ -9,6 +9,7 @@ import lombok.ToString;
 @Data
 @ToString
 public class ReciboEntradaDTO {
+	private Long id;
 	private LocalDate dataInicio;
 	private LocalDate dataFim;
 	private BigDecimal valorAgua;

@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,5 +34,12 @@ public class ReciboResource {
 			@RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage) {
 		Page<ReciboSaidaDTO> list = reciboService.listarRecibos(locacaoId, page, linesPerPage);
 		return ResponseEntity.ok().body(list);
+	}
+	
+	@PutMapping("/{reciboId}")
+	public ResponseEntity<ReciboSaidaDTO> atualizarRecibo(@PathVariable Long reciboId, @RequestBody ReciboEntradaDTO reciboEntradaDTO) {
+		reciboEntradaDTO.setId(reciboId);
+		ReciboSaidaDTO recibo = reciboService.atualizarRecibo(reciboEntradaDTO);
+		return ResponseEntity.ok().body(recibo);
 	}
 }

@@ -38,15 +38,17 @@ public class Usuario implements Serializable {
 
 	private String nome;
 
-//	@Column(unique = true)
+	@Column(unique = true)
 	private String rg;
 
-//	@Column(unique = true)
+	@Column(unique = true)
 	private String cpf;
+	
 	private String nacionalidade;
 
-//	@Column(unique = true)
+	@Column(unique = true)
 	private String email;
+	
 	private String senha;
 
 	@ElementCollection(fetch = FetchType.EAGER)

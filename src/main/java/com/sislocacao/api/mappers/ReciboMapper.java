@@ -17,6 +17,7 @@ public class ReciboMapper {
 	public Recibo paraReciboEntidade(final ReciboEntradaDTO reciboDto, final BigDecimal totalRecibo, final Integer numeroRecibo, final Locacao locacao, final Usuario usuario) {
 		Recibo recibo = new Recibo();
 		
+		recibo.setId(reciboDto.getId() != null ? reciboDto.getId() : null);
 		recibo.setNumeroRecibo(numeroRecibo);
 		recibo.setTotalJuros(BigDecimal.ZERO);
 		

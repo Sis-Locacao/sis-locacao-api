@@ -35,4 +35,13 @@ public interface ReciboService {
 	 * @return Lista páginada de ReciboSaidaDTO
 	 */
 	public Page<ReciboSaidaDTO> listarRecibos(final Long locacaoId, Integer page, Integer linesPerPage);
+	
+	/**
+	 * Atualiza os dados de um recibo com base nos dados fornecidos no objeto ReciboEntradaDTO
+	 * 
+	 * @param reciboEntradaDto
+	 * 
+	 * @return Um objeto DTO com os dados de recibo ReciboSaidaDTO
+	 */
+	public ReciboSaidaDTO atualizarRecibo(ReciboEntradaDTO reciboEntradaDto);
 }

@@ -101,8 +101,33 @@ public class ReciboServiceImpl implements ReciboService {
 				.orElseThrow(() -> new ResourceNotFoundException("Recibo não encontrado com o id: " + id));
 	}
 
+	@Override
+	public ReciboSaidaDTO atualizarRecibo(ReciboEntradaDTO reciboEntradaDto) {
+		// valida usuario autenticado
+		Usuario user = usuarioService.validaUsuarioAutenticado();
+
+		// Recupera recibo
+		reciboRepository.findById(reciboEntradaDto.getId()).orElseThrow(
+				() -> new ResourceNotFoundException("Recibo não encontradao com o id: " + reciboEntradaDto.getId()));
+
+		// recupera dados do contrato
+		Locacao locacao = locacaoRepository.findById(reciboEntradaDto.getLocacaoId())
+				.orElseThrow(() -> new ResourceNotFoundException(
+						"Locacação não encontrada com o id: " + reciboEntradaDto.getLocacaoId()));
+
+		// calcula o total do recibo
+		BigDecimal totalRecibo = calculaTotalRecibo(reciboEntradaDto, locacao);
+
+		// mapear recibo para uma entidade
+		Recibo rec = reciboMapper.paraReciboEntidade(reciboEntradaDto, totalRecibo,
+				reciboEntradaDto.getNumeroRecibo(), locacao, user);
+
+		// salva e retorna recibo
+		
+		return reciboMapper.paraReciboSaidaDto(reciboRepository.save(rec));
+	}
+
 	private BigDecimal calculaTotalRecibo(ReciboEntradaDTO recibo, Locacao locacao) {
 		return locacao.getImovel().getValor().add(recibo.getValorAgua()).add(recibo.getValorEnergia());
 	}
-
 }
