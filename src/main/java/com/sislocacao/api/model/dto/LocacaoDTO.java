@@ -24,5 +24,7 @@ public class LocacaoDTO {
 	
 	private InquilinoDTO inquilino;
 	
+	private ImovelDTO imovel;
+	
 	private List<ReciboSaidaDTO> recibos = new ArrayList<>();
 }

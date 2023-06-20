@@ -19,6 +19,9 @@ public class LocacaoMapper {
 	@Autowired
 	private ReciboMapper reciboMapper;
 	
+	@Autowired
+	private ImovelMapper imovelMapper;
+	
 	public LocacaoDTO locacaoEntidadaParaLocacaoSaidaDto (final Locacao locacao) {
 		LocacaoDTO dto = new LocacaoDTO();
 		
@@ -28,6 +31,8 @@ public class LocacaoMapper {
 		dto.setValorCaucao(locacao.getValorCaucao());
 		
 		dto.setInquilino(inquilinoMapper.inquilinoEntidadeParaInquilinoDto(locacao.getInquilino()));
+		
+		dto.setImovel(imovelMapper.imovelEntidadeParaImovelDto(locacao.getImovel()));
 		
 		List<ReciboSaidaDTO> reciboSaidaDto = new ArrayList<>();
 		

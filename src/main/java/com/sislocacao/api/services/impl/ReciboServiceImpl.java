@@ -41,7 +41,6 @@ public class ReciboServiceImpl implements ReciboService {
 	private ReciboMapper reciboMapper;
 
 	@Autowired
-
 	private UsuarioService usuarioService;
 
 	@Transactional
