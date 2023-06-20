@@ -2,6 +2,8 @@ package com.sislocacao.api.model.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,4 +23,6 @@ public class LocacaoDTO {
 	private BigDecimal valorCaucao;
 	
 	private InquilinoDTO inquilino;
+	
+	private List<ReciboSaidaDTO> recibos = new ArrayList<>();
 }

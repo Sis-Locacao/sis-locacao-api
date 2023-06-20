@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sislocacao.api.exceptions.impl.ResourceNotFoundException;
 import com.sislocacao.api.mappers.ReciboMapper;
+import com.sislocacao.api.model.dto.LocacaoDTO;
 import com.sislocacao.api.model.dto.ReciboEntradaDTO;
 import com.sislocacao.api.model.dto.ReciboSaidaDTO;
 import com.sislocacao.api.model.entity.Locacao;
@@ -78,7 +79,7 @@ public class ReciboServiceImpl implements ReciboService {
 		Usuario user = usuarioService.validaUsuarioAutenticado();
 
 		// Recupera dados de locação
-		Locacao locacao = locacaoService.buscarLocacaoPorId(locacaoId);
+		LocacaoDTO locacao = locacaoService.buscarLocacaoPorId(locacaoId);
 
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage);
 
