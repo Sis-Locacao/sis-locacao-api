@@ -111,7 +111,7 @@ public class ReciboServiceImpl implements ReciboService {
 		Usuario user = usuarioService.validaUsuarioAutenticado();
 
 		logger.info("[02] - Recupera recibo");
-		reciboRepository.findById(reciboEntradaDto.getId()).orElseThrow(
+		Recibo recibo = reciboRepository.findById(reciboEntradaDto.getId()).orElseThrow(
 				() -> new ResourceNotFoundException("Recibo não encontradao com o id: " + reciboEntradaDto.getId()));
 
 		logger.info("[03] - recupera dados do contrato");
@@ -124,7 +124,7 @@ public class ReciboServiceImpl implements ReciboService {
 
 		logger.info("[05] - mapear recibo para uma entidade");
 		Recibo rec = reciboMapper.paraReciboEntidade(reciboEntradaDto, totalRecibo,
-				reciboEntradaDto.getNumeroRecibo(), locacao, user);
+				recibo.getNumeroRecibo(), locacao, user);
 
 		logger.info("[06] - salva e retorna recibo");
 		return reciboMapper.paraReciboSaidaDto(reciboRepository.save(rec));
