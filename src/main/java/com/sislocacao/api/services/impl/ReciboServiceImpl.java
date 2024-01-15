@@ -10,6 +10,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.sislocacao.api.exceptions.impl.ResourceNotFoundException;
 import com.sislocacao.api.mappers.ReciboMapper;
@@ -27,6 +29,7 @@ import com.sislocacao.api.services.UsuarioService;
 
 @Service
 public class ReciboServiceImpl implements ReciboService {
+	private static Logger logger = LoggerFactory.getLogger(ReciboServiceImpl.class);
 
 	@Autowired
 	private ReciboRepository reciboRepository;
@@ -45,28 +48,28 @@ public class ReciboServiceImpl implements ReciboService {
 
 	@Transactional
 	@Override
-	public ReciboSaidaDTO salvarRecibo(ReciboEntradaDTO reciboEntradaDTO) {
-		// valida usuario autenticado
+	public ReciboSaidaDTO salvarRecibo(ReciboEntradaDTO reciboEntradaDTO) {	
+		logger.info("[01] - Validando usuário autenticado");
 		Usuario user = usuarioService.validaUsuarioAutenticado();
 
-		// recupera dados do contrato
+		logger.info("[02] - recupera dados do contrato");
 		Locacao locacao = locacaoRepository.findById(reciboEntradaDTO.getLocacaoId())
 				.orElseThrow(() -> new ResourceNotFoundException(
 						"Locacação não encontrada com o id: " + reciboEntradaDTO.getLocacaoId()));
 
-		// recupera ultimo recibo gerado para esse inquilino
+		logger.info("[03] - recupera ultimo recibo gerado para esse inquilino");
 		Recibo buscarUltimoReciboGerado = reciboRepository.buscarUltimoReciboGerado(reciboEntradaDTO.getLocacaoId());
 
-		// incrementa o numero do recibo
+		logger.info("[04] - incrementa o numero do recibo");
 		Integer numeroRecibo = buscarUltimoReciboGerado == null ? 1 : buscarUltimoReciboGerado.getNumeroRecibo() + 1;
 
-		// calcula o total do recibo
+		logger.info("[05] - calcula o total do recibo");
 		BigDecimal totalRecibo = calculaTotalRecibo(reciboEntradaDTO, locacao);
-
-		// mapear recibo para uma entidade
+		
+		logger.info("[06] - mapear recibo para uma entidade");
 		Recibo recibo = reciboMapper.paraReciboEntidade(reciboEntradaDTO, totalRecibo, numeroRecibo, locacao, user);
 
-		// salvar recibo
+		logger.info("[07] - salvar recibo");
 		Recibo reciboSalvo = reciboRepository.save(recibo);
 
 		return reciboMapper.paraReciboSaidaDto(reciboSalvo);
@@ -74,27 +77,28 @@ public class ReciboServiceImpl implements ReciboService {
 
 	@Override
 	public Page<ReciboSaidaDTO> listarRecibos(Long locacaoId, Integer page, Integer linesPerPage) {
-		// Valida usuário autenticado
+		logger.info("[01] - Validando usuário autenticado");
 		Usuario user = usuarioService.validaUsuarioAutenticado();
 
-		// Recupera dados de locação
+		logger.info("[02] - recupera dados do contrato");
 		LocacaoDTO locacao = locacaoService.buscarLocacaoPorId(locacaoId);
 
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage);
 
-		// Recupera recibos
+		logger.info("[3] - Recuepra recibos");
 		Page<Recibo> recibos = reciboRepository.findByUsuarioAndLocacao(user.getId(), locacao.getId(), pageRequest);
-
-		// mapeia lista de recibos para um objeto de saída DTO
+		
+		logger.info("[4] - mapeia lista de recibos para um objeto de saída DTO");
 		List<ReciboSaidaDTO> listaRecibosSaida = recibos.getContent().stream()
 				.map(recibo -> reciboMapper.paraReciboSaidaDto(recibo)).collect(Collectors.toList());
 
+		logger.info("[5] - Retorna lista de recibos");
 		return new PageImpl<>(listaRecibosSaida, pageRequest, recibos.getTotalElements());
 	}
 
 	@Override
 	public Recibo buscarReciboPorId(Long id, Long locacaoId) {
-		// Valida usuário autenticado
+		logger.info("[01] - Validando usuário autenticado");
 		usuarioService.validaUsuarioAutenticado();
 
 		return reciboRepository.buscarReciboPorIdELocacao(id, locacaoId)
@@ -103,27 +107,26 @@ public class ReciboServiceImpl implements ReciboService {
 
 	@Override
 	public ReciboSaidaDTO atualizarRecibo(ReciboEntradaDTO reciboEntradaDto) {
-		// valida usuario autenticado
+		logger.info("[01] - Validando usuário autenticado");
 		Usuario user = usuarioService.validaUsuarioAutenticado();
 
-		// Recupera recibo
+		logger.info("[02] - Recupera recibo");
 		reciboRepository.findById(reciboEntradaDto.getId()).orElseThrow(
 				() -> new ResourceNotFoundException("Recibo não encontradao com o id: " + reciboEntradaDto.getId()));
 
-		// recupera dados do contrato
+		logger.info("[03] - recupera dados do contrato");
 		Locacao locacao = locacaoRepository.findById(reciboEntradaDto.getLocacaoId())
 				.orElseThrow(() -> new ResourceNotFoundException(
 						"Locacação não encontrada com o id: " + reciboEntradaDto.getLocacaoId()));
 
-		// calcula o total do recibo
+		logger.info("[04] - calcula o total do recibo");
 		BigDecimal totalRecibo = calculaTotalRecibo(reciboEntradaDto, locacao);
 
-		// mapear recibo para uma entidade
+		logger.info("[05] - mapear recibo para uma entidade");
 		Recibo rec = reciboMapper.paraReciboEntidade(reciboEntradaDto, totalRecibo,
 				reciboEntradaDto.getNumeroRecibo(), locacao, user);
 
-		// salva e retorna recibo
-		
+		logger.info("[06] - salva e retorna recibo");
 		return reciboMapper.paraReciboSaidaDto(reciboRepository.save(rec));
 	}
 
