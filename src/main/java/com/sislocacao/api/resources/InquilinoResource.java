@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +17,7 @@ import com.sislocacao.api.model.dto.InquilinoEntradaDTO;
 import com.sislocacao.api.services.InquilinoService;
 
 @RestController
-@RequestMapping("/inquilino")
+@RequestMapping("/inquilinos")
 public class InquilinoResource {
 	
 	@Autowired
@@ -30,5 +31,10 @@ public class InquilinoResource {
 	@GetMapping
 	public ResponseEntity<List<InquilinoDTO>> listar(){
 		return ResponseEntity.status(HttpStatus.OK).body(inquilinoService.listar());
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<InquilinoDTO> buscarPorId(@PathVariable final Long id){
+		return ResponseEntity.status(HttpStatus.OK).body(inquilinoService.buscarPorId(id));
 	}
 }

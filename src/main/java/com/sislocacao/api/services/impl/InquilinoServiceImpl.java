@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.sislocacao.api.exceptions.impl.ResourceNotFoundException;
 import com.sislocacao.api.mappers.InquilinoMapper;
 import com.sislocacao.api.model.dto.InquilinoDTO;
 import com.sislocacao.api.model.dto.InquilinoEntradaDTO;
@@ -31,7 +32,7 @@ public class InquilinoServiceImpl implements InquilinoService {
 	@Override
 	public InquilinoDTO salvar(InquilinoEntradaDTO inquilinoEntradaDTO) {
 		Usuario usuario = usuarioService.validaUsuarioAutenticado();
-		
+
 		Inquilino inquilino = inquilinoRespository
 				.save(inquilinoMapper.inquilinoDtoParaInquilinoEntidade(inquilinoEntradaDTO, usuario));
 		return inquilinoMapper.inquilinoEntidadeParaInquilinoDto(inquilino);
@@ -40,16 +41,26 @@ public class InquilinoServiceImpl implements InquilinoService {
 	@Override
 	public List<InquilinoDTO> listar() {
 		Usuario usuario = usuarioService.validaUsuarioAutenticado();
-		
+
 		List<InquilinoDTO> listaInquilinoDto = new ArrayList<>();
-		
+
 		List<Inquilino> inquilinos = inquilinoRespository.findAllByUsuario(usuario);
-		
+
 		for (Inquilino inquilino : inquilinos) {
 			listaInquilinoDto.add(inquilinoMapper.inquilinoEntidadeParaInquilinoDto(inquilino));
 		}
-		
+
 		return listaInquilinoDto;
+	}
+
+	@Override
+	public InquilinoDTO buscarPorId(Long id) {
+		Usuario usuario = usuarioService.validaUsuarioAutenticado();
+
+		Inquilino inquilino = inquilinoRespository.findByIdAndUsuario(id, usuario)
+				.orElseThrow(() -> new ResourceNotFoundException("Inquilino não encontrado !"));
+		
+		return inquilinoMapper.inquilinoEntidadeParaInquilinoDto(inquilino);
 	}
 
 }

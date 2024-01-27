@@ -19,4 +19,11 @@ public interface InquilinoService {
 	 * @return Lista de InquilinoDTO
 	 */
 	List<InquilinoDTO> listar();
+	
+	/**
+	 * Metodo responsável por buscar um inquilino pelo ID
+	 * @param id
+	 * @return InquilinoDTO
+	 */
+	InquilinoDTO buscarPorId(final Long id);
 }
