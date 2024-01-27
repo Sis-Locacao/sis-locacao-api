@@ -26,4 +26,10 @@ public interface InquilinoService {
 	 * @return InquilinoDTO
 	 */
 	InquilinoDTO buscarPorId(final Long id);
+	
+	/**
+	 * Metodo responsável por excluir um inquilino
+	 * @param id
+	 */
+	void delete(final Long id);
 }
