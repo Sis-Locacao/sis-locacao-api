@@ -1,5 +1,8 @@
 package com.sislocacao.api.services.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.sislocacao.api.mappers.InquilinoMapper;
@@ -26,12 +29,27 @@ public class InquilinoServiceImpl implements InquilinoService {
 	}
 
 	@Override
-	public InquilinoDTO salvarInquilino(InquilinoEntradaDTO inquilinoEntradaDTO) {
+	public InquilinoDTO salvar(InquilinoEntradaDTO inquilinoEntradaDTO) {
 		Usuario usuario = usuarioService.validaUsuarioAutenticado();
 		
 		Inquilino inquilino = inquilinoRespository
 				.save(inquilinoMapper.inquilinoDtoParaInquilinoEntidade(inquilinoEntradaDTO, usuario));
 		return inquilinoMapper.inquilinoEntidadeParaInquilinoDto(inquilino);
+	}
+
+	@Override
+	public List<InquilinoDTO> listar() {
+		Usuario usuario = usuarioService.validaUsuarioAutenticado();
+		
+		List<InquilinoDTO> listaInquilinoDto = new ArrayList<>();
+		
+		List<Inquilino> inquilinos = inquilinoRespository.findAllByUsuario(usuario);
+		
+		for (Inquilino inquilino : inquilinos) {
+			listaInquilinoDto.add(inquilinoMapper.inquilinoEntidadeParaInquilinoDto(inquilino));
+		}
+		
+		return listaInquilinoDto;
 	}
 
 }

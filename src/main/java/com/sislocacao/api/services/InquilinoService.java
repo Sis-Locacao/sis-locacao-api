@@ -1,5 +1,7 @@
 package com.sislocacao.api.services;
 
+import java.util.List;
+
 import com.sislocacao.api.model.dto.InquilinoDTO;
 import com.sislocacao.api.model.dto.InquilinoEntradaDTO;
 
@@ -10,5 +12,11 @@ public interface InquilinoService {
 	 * @param inquilinoDto
 	 * @return InquilinoDTO
 	 */
-	InquilinoDTO salvarInquilino(final InquilinoEntradaDTO inquilinoDto);
+	InquilinoDTO salvar(final InquilinoEntradaDTO inquilinoDto);
+	
+	/**
+	 * Metodo responsável por listar todos os inquilinos de um usuário específico
+	 * @return Lista de InquilinoDTO
+	 */
+	List<InquilinoDTO> listar();
 }
