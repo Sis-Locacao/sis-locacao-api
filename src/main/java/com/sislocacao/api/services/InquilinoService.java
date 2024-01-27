@@ -32,4 +32,12 @@ public interface InquilinoService {
 	 * @param id
 	 */
 	void delete(final Long id);
+	
+	/**
+	 * Metodo responsável por atualizar os dados de um inquilino
+	 * @param id
+	 * @param inquilinoDto
+	 * @return InquilinoDto atualizado
+	 */
+	InquilinoDTO atualizar(final Long id, final InquilinoEntradaDTO inquilinoDto);
 }

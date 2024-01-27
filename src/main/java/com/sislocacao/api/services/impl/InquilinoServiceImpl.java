@@ -59,18 +59,33 @@ public class InquilinoServiceImpl implements InquilinoService {
 
 		Inquilino inquilino = inquilinoRespository.findByIdAndUsuario(id, usuario)
 				.orElseThrow(() -> new ResourceNotFoundException("Inquilino não encontrado !"));
-		
+
 		return inquilinoMapper.inquilinoEntidadeParaInquilinoDto(inquilino);
 	}
 
 	@Override
 	public void delete(Long id) {
 		Usuario usuario = usuarioService.validaUsuarioAutenticado();
-		
+
 		Inquilino inquilino = inquilinoRespository.findByIdAndUsuario(id, usuario)
 				.orElseThrow(() -> new ResourceNotFoundException("Inquilino não encontrado !"));
-		
+
 		inquilinoRespository.delete(inquilino);
+	}
+
+	@Override
+	public InquilinoDTO atualizar(Long id, InquilinoEntradaDTO inquilinoDto) {
+		Usuario usuario = usuarioService.validaUsuarioAutenticado();
+
+		inquilinoRespository.findByIdAndUsuario(id, usuario)
+				.orElseThrow(() -> new ResourceNotFoundException("Inquilino não encontrado !"));
+		
+		inquilinoDto.setId(id);
+		
+		Inquilino inquilinoAtualizado = inquilinoRespository
+				.save(inquilinoMapper.inquilinoDtoParaInquilinoEntidade(inquilinoDto, usuario));
+
+		return inquilinoMapper.inquilinoEntidadeParaInquilinoDto(inquilinoAtualizado);
 	}
 
 }

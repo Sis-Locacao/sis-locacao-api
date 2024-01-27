@@ -7,6 +7,8 @@ import com.sislocacao.api.model.dto.InquilinoEntradaDTO;
 import com.sislocacao.api.model.entity.Inquilino;
 import com.sislocacao.api.model.entity.Usuario;
 
+import io.jsonwebtoken.lang.Objects;
+
 @Component
 public class InquilinoMapper {
 	public InquilinoDTO inquilinoEntidadeParaInquilinoDto(Inquilino inquilino) {
@@ -15,12 +17,16 @@ public class InquilinoMapper {
 		dto.setNome(inquilino.getNome());
 		dto.setRg(inquilino.getRg());
 		dto.setCpf(inquilino.getCpf());
-		
+
 		return dto;
 	}
-	
+
 	public Inquilino inquilinoDtoParaInquilinoEntidade(final InquilinoEntradaDTO inquilinoDto, final Usuario usuario) {
 		Inquilino inquilino = new Inquilino();
+		if (inquilinoDto.getId() != null) {
+			inquilino.setId(inquilinoDto.getId());
+		}
+
 		inquilino.setNome(inquilinoDto.getNome());
 		inquilino.setRg(inquilinoDto.getRg());
 		inquilino.setCpf(inquilinoDto.getCpf());
