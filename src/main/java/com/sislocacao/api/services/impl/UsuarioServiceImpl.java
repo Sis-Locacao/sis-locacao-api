@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sislocacao.api.exceptions.impl.AuthorizationException;
-import com.sislocacao.api.exceptions.impl.DataIntegrityViolationException;
+import com.sislocacao.api.exceptions.impl.DataIntegrityViolationExceptionApp;
 import com.sislocacao.api.exceptions.impl.ResourceNotFoundException;
 import com.sislocacao.api.mappers.EnderecoMapper;
 import com.sislocacao.api.mappers.UsuarioMapper;
@@ -60,21 +60,21 @@ public class UsuarioServiceImpl implements UsuarioService {
 		Optional<Usuario> usuarioRg = usuarioRepository.findByRg(usuarioEntradaDTO.getRg());
 
 		if (usuarioRg.isPresent()) {
-			throw new DataIntegrityViolationException("Já existe um usuário cadastrado com esse RG");
+			throw new DataIntegrityViolationExceptionApp("Já existe um usuário cadastrado com esse RG");
 		}
 
 		// verifica se existe um usuario com o cpf
 		Optional<Usuario> findByCpf = usuarioRepository.findByCpf(usuarioEntradaDTO.getCpf());
 
 		if (findByCpf.isPresent()) {
-			throw new DataIntegrityViolationException("Já existe um usuário cadastrado com esse CPF");
+			throw new DataIntegrityViolationExceptionApp("Já existe um usuário cadastrado com esse CPF");
 		}
 
 		// verifica se existe um usuario com o email
 		Optional<Usuario> findByEmail = usuarioRepository.findByEmail(usuarioEntradaDTO.getEmail());
 
 		if (findByEmail.isPresent()) {
-			throw new DataIntegrityViolationException("Já existe um usuário cadastrado com esse e-mail");
+			throw new DataIntegrityViolationExceptionApp("Já existe um usuário cadastrado com esse e-mail");
 		}
 	}
 

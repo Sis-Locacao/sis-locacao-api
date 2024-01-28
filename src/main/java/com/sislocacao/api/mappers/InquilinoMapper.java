@@ -7,8 +7,6 @@ import com.sislocacao.api.model.dto.InquilinoEntradaDTO;
 import com.sislocacao.api.model.entity.Inquilino;
 import com.sislocacao.api.model.entity.Usuario;
 
-import io.jsonwebtoken.lang.Objects;
-
 @Component
 public class InquilinoMapper {
 	public InquilinoDTO inquilinoEntidadeParaInquilinoDto(Inquilino inquilino) {

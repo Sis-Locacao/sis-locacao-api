@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.sislocacao.api.exceptions.impl.AuthorizationException;
-import com.sislocacao.api.exceptions.impl.DataIntegrityViolationException;
+import com.sislocacao.api.exceptions.impl.DataIntegrityViolationExceptionApp;
 import com.sislocacao.api.exceptions.impl.ResourceNotFoundException;
 import com.sislocacao.api.exceptions.impl.SisLocacaoException;
 
@@ -29,8 +29,8 @@ public class ResourceExceptionHandler {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND.value()).body(err);
 	}
 	
-	@ExceptionHandler(DataIntegrityViolationException.class)
-	public ResponseEntity<StandardError> conflictException(DataIntegrityViolationException exception,  HttpServletRequest request){
+	@ExceptionHandler(DataIntegrityViolationExceptionApp.class)
+	public ResponseEntity<StandardError> conflictException(DataIntegrityViolationExceptionApp exception,  HttpServletRequest request){
 		StandardError err = new StandardError();
 		err.setTimestamp(Instant.now());
 		err.setStatus(HttpStatus.CONFLICT.value());
